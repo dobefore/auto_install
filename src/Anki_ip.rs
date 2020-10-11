@@ -202,6 +202,14 @@ pub mod Anki_ip {
                 print_colors::format_green("---------------------------------------------")
             );
             //Ankidroid ca import
+            println!("{}",format_green("--------------------------------------"));
+            println!("接下来是手机CA证书安装");
+            println!("进入手机QQ/TIM或文件浏览器，找到文件 {}，触摸打开",format_green("rootCA.crt"));
+            println!("证书名称随意填");
+            print!("如手机证书已安装，输入数字 {} 并按回车键/enter继续下一步配置：",format_green("1"));
+            stdout().flush().unwrap();
+            
+
         }
 
         Ok(())
