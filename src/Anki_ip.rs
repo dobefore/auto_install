@@ -42,7 +42,7 @@ pub mod Anki_ip {
         }
         Ok(())
     }
-    fn print_anki_options(ankidroid_ver: &str) -> io::Result<()> {
+    fn print_anki_options<'a>(ankidroid_ver: &'a str) -> io::Result<()> {
         println!(
             "如果你的anki版本为 {}，输入数字 {} 并按回车键/enter复制插件",
             print_colors::format_green("2.1.1~2.1.21"),
@@ -57,10 +57,12 @@ pub mod Anki_ip {
         print!("你要输入的数字为：");
         stdout().flush().unwrap();
         let mut PC_anki_ver = String::new();
-        io::stdin().read_to_string(&mut PC_anki_ver)?;
+        io::stdin().read_line(&mut PC_anki_ver)?;
+        println!("ankidroid_ver{}",ankidroid_ver);
         match ankidroid_ver {
             "1" => {
                 //http
+                
                 match PC_anki_ver.trim() {
                     "1" => {
                         //modify PC anki IP
@@ -70,7 +72,7 @@ pub mod Anki_ip {
                         );
                         fs::write(r"pre_install\write_nu.txt", b"1")?;
                         let _py_in_ = Command::new("python")
-                            .arg(r"nki_server_v_2.1.26\anki-sync-server\auto_ch_IP.py")
+                            .arg(r"anki_server_v_2.1.26\anki-sync-server\auto_ch_IP.py")
                             .spawn()
                             .expect("Failed to start change PC anki IP process")
                             .wait_with_output();
@@ -83,7 +85,7 @@ pub mod Anki_ip {
                         );
                         fs::write(r"pre_install\write_nu.txt", b"2")?;
                         let _py_in_ = Command::new("python")
-                            .arg(r"nki_server_v_2.1.26\anki-sync-server\auto_ch_IP.py")
+                            .arg(r"anki_server_v_2.1.26\anki-sync-server\auto_ch_IP.py")
                             .spawn()
                             .expect("Failed to start change PC IP process")
                             .wait_with_output();
@@ -102,7 +104,7 @@ pub mod Anki_ip {
                         );
                         fs::write(r"pre_install\write_nu.txt", b"1")?;
                         let _py_in_ = Command::new("python")
-                            .arg(r"nki_server_v_2.1.26\anki-sync-server\auto_ch_IP_https.py")
+                            .arg(r"anki_server_v_2.1.26\anki-sync-server\auto_ch_IP_https.py")
                             .spawn()
                             .expect("Failed to start change PC anki IP process")
                             .wait_with_output();
@@ -116,7 +118,7 @@ pub mod Anki_ip {
                         );
                         fs::write(r"pre_install\write_nu.txt", b"2")?;
                         let _py_in_ = Command::new("python")
-                            .arg(r"nki_server_v_2.1.26\anki-sync-server\auto_ch_IP_https.py")
+                            .arg(r"anki_server_v_2.1.26\anki-sync-server\auto_ch_IP_https.py")
                             .spawn()
                             .expect("Failed to start change PC anki IP process")
                             .wait_with_output();
@@ -144,20 +146,20 @@ pub mod Anki_ip {
             format_green("1")
         );
         stdout().flush().unwrap();
-        let mut inp1 = String::new();
-        stdin().read_line(&mut inp1)?;
-        if let "1" = inp1.trim() {
+        let mut inp0 = String::new();
+        stdin().read_line(&mut inp0)?;
+        if let "1" = inp0.trim() {
             println!("复制CA证书到桌面。。。");
             // get win_usr name and rename rootca.pem to .crt send to desktop
             let mut win_usr_name = String::new();
-            fs::File::open(r"anki_server_v_2.1.26\anki-sync-server\server_txts\win_username.txt")?
+            fs::File::open(r".\anki_server_v_2.1.26\anki-sync-server\server_txts\win_username.txt")?
                 .read_to_string(&mut win_usr_name)?;
             let rootca_file_path = Path::new(r"C:\Users")
                 .join(&win_usr_name.trim())
                 .join(r"AppData\Local\mkcert")
                 .join("rootCA.pem");
             let rootca_desktop_path = Path::new(r"C:\Users")
-                .join(&win_usr_name)
+                .join(&win_usr_name.trim())
                 .join(r"Desktop\rootCA.crt");
             fs::rename(rootca_file_path, rootca_desktop_path)?;
             println!(
@@ -202,14 +204,45 @@ pub mod Anki_ip {
                 print_colors::format_green("---------------------------------------------")
             );
             //Ankidroid ca import
-            println!("{}",format_green("--------------------------------------"));
+            println!("{}", format_green("--------------------------------------"));
             println!("接下来是手机CA证书安装");
-            println!("进入手机QQ/TIM或文件浏览器，找到文件 {}，触摸打开",format_green("rootCA.crt"));
+            println!(
+                "进入手机QQ/TIM或文件浏览器，找到文件 {}，触摸打开",
+                format_green("rootCA.crt")
+            );
             println!("证书名称随意填");
-            print!("如手机证书已安装，输入数字 {} 并按回车键/enter继续下一步配置：",format_green("1"));
+            print!(
+                "如手机证书已安装，输入数字 {} 并按回车键/enter继续下一步配置：",
+                format_green("1")
+            );
             stdout().flush().unwrap();
-            
-
+            let mut inp3 = String::new();
+            stdin().read_line(&mut inp3)?;
+            if let "1" = inp3.trim() {
+                println!("-------------------------------------");
+                println!("请打开手机Anki以修改IP");
+                println!(
+                    "请在本软件文件夹目录-->电脑端和手机端anki的配置里打开安卓手机anki设置的图片"
+                );
+                println!("并将下行内容填在手机Anki的指定位置");
+                let mut ipa_ = String::new();
+                fs::File::open(r"anki_server_v_2.1.26\anki-sync-server\server_txts\ip.txt")?
+                    .read_to_string(&mut ipa_)?;
+                println!("请在文件夹目录-->电脑端和手机端anki的配置里打开安卓手机anki设置的图片");
+                println!("并将下行内容填在手机Anki的指定位置");
+                println!(
+                    "{}{}{}    (同步地址)",
+                    format_green("https://"),
+                    format_green(&ipa_.trim()),
+                    format_green(":27701")
+                );
+                println!(
+                    "{}{}{}   (媒体文件同步地址)",
+                    format_green("https://"),
+                    format_green(&ipa_.trim()),
+                    format_green(":27701/msync")
+                );
+            }
         }
 
         Ok(())
@@ -221,7 +254,7 @@ pub mod Anki_ip {
         match ver {
             "1" => {
                 //use http protocol
-                
+
                 print_anki_options("1").unwrap();
                 //modify Ankidroid IP
                 change_Ankidroid_ip_http().unwrap();
