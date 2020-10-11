@@ -1,8 +1,8 @@
 use std::io::*;
 use std::process::Command;
+mod Anki_exe;
 #[warn(non_snake_case)]
 mod Anki_ip;
-mod Anki_exe;
 mod check_python;
 mod print_colors;
 fn main() -> Result<()> {
@@ -81,11 +81,14 @@ fn main() -> Result<()> {
                 println!("根据你的输入，确认手机Anki 版本<2.10");
                 println!("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
                 Anki_ip::win_anki_ver_handle("1");
-                print!("如手机Anki IP以修改，输入数字 {} 并按回车键/enter继续下一步配置：",print_colors::format_green("1"));
+                print!(
+                    "如手机Anki IP以修改，输入数字 {} 并按回车键/enter继续下一步配置：",
+                    print_colors::format_green("1")
+                );
                 stdout().flush().unwrap();
-                let mut input4=String::new();
+                let mut input4 = String::new();
                 stdin().read_line(&mut input4)?;
-                if let "1" =input4.trim()  {
+                if let "1" = input4.trim() {
                     Anki_exe::anki_send_desktop();
                 }
             }
@@ -114,13 +117,16 @@ fn main() -> Result<()> {
                     Anki_ip::win_anki_ver_handle("2");
                     // install local CA
                     Anki_ip::install_CA()?;
-                    print!("如手机Anki IP以修改，输入数字 {} 并按回车键/enter继续下一步配置：",print_colors::format_green("1"));
-                stdout().flush().unwrap();
-                let mut input4=String::new();
-                stdin().read_line(&mut input4)?;
-                if let "1" =input4.trim()  {
-                    Anki_exe::anki_send_desktop();
-                }
+                    print!(
+                        "如手机Anki IP以修改，输入数字 {} 并按回车键/enter继续下一步配置：",
+                        print_colors::format_green("1")
+                    );
+                    stdout().flush().unwrap();
+                    let mut input4 = String::new();
+                    stdin().read_line(&mut input4)?;
+                    if let "1" = input4.trim() {
+                        Anki_exe::anki_send_desktop();
+                    }
                 }
             }
             _ => {

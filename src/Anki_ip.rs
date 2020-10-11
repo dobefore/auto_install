@@ -58,11 +58,11 @@ pub mod Anki_ip {
         stdout().flush().unwrap();
         let mut PC_anki_ver = String::new();
         io::stdin().read_line(&mut PC_anki_ver)?;
-        println!("ankidroid_ver{}",ankidroid_ver);
+        println!("ankidroid_ver{}", ankidroid_ver);
         match ankidroid_ver {
             "1" => {
                 //http
-                
+
                 match PC_anki_ver.trim() {
                     "1" => {
                         //modify PC anki IP
@@ -152,8 +152,10 @@ pub mod Anki_ip {
             println!("复制CA证书到桌面。。。");
             // get win_usr name and rename rootca.pem to .crt send to desktop
             let mut win_usr_name = String::new();
-            fs::File::open(r".\anki_server_v_2.1.26\anki-sync-server\server_txts\win_username.txt")?
-                .read_to_string(&mut win_usr_name)?;
+            fs::File::open(
+                r".\anki_server_v_2.1.26\anki-sync-server\server_txts\win_username.txt",
+            )?
+            .read_to_string(&mut win_usr_name)?;
             let rootca_file_path = Path::new(r"C:\Users")
                 .join(&win_usr_name.trim())
                 .join(r"AppData\Local\mkcert")
