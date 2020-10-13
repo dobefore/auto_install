@@ -7,19 +7,23 @@ mod check_python;
 mod print_colors;
 fn main() -> Result<()> {
     println!("开始运行Anki服务器首次配置引导程序。。。");
+    println!("如你在程序运行过程中遇到阻挠，请咸鱼联系我哟");
     println!("请和教程结合使用(选中下面教程网址鼠标右键单击复制)");
     println!("https://dobefore.github.io/%E6%90%AD%E5%BB%BA-Anki%E5%B1%80%E5%9F%9F%E7%BD%91%E5%90%8C%E6%AD%A5%E6%9C%8D%E5%8A%A1%E5%99%A8.html");
     print_colors::write_green(&"-------------------------------------------")?;
     print_colors::print_green("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+    //refresh python version
+    let  py_ver="3.9";
+let python_ver="python3.9";
     println!(
         "如果你的PC已安装了 {} 或除 {} 以外的py3版本，请卸载它们。。。",
         print_colors::format_green("py2"),
-        print_colors::format_green("py3.8")
+        print_colors::format_green(&py_ver)
     );
-    println!("如果你已卸载py或者没有安装python，输入数字  {}  并按回车键/enter安装py3.8(请根据教程操作)：",print_colors::format_green("1"));
+    println!("如果你已卸载py或者没有安装python，输入数字  {}  并按回车键/enter安装py{}(请根据教程操作)：",print_colors::format_green("1"),&py_ver);
     println!(
         "如果你已安装 {} ，输入数字  {}  并按回车键/enter进行下一步操作",
-        print_colors::format_green("python3.8"),
+        print_colors::format_green(python_ver),
         print_colors::format_green("2")
     );
     print!("你输入的数字为：");
@@ -28,7 +32,7 @@ fn main() -> Result<()> {
     stdin().read_line(&mut input)?;
     match input.trim() {
         "1" => {
-            let _py_in = Command::new(r"pre_install\python-3.8.5-amd64.exe")
+            let _py_in = Command::new(r"pre_install\python-3.9.0-amd64.exe")
                 .output()
                 .expect("Failed to install python");
         }
