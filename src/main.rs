@@ -13,8 +13,8 @@ fn main() -> Result<()> {
     print_colors::write_green(&"-------------------------------------------")?;
     print_colors::print_green("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
     //refresh python version
-    let  py_ver="3.9";
-let python_ver="python3.9";
+    let py_ver = "3.9";
+    let python_ver = "python3.9";
     println!(
         "如果你的PC已安装了 {} 或除 {} 以外的py3版本，请卸载它们。。。",
         print_colors::format_green("py2"),
