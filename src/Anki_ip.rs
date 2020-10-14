@@ -163,7 +163,7 @@ pub mod Anki_ip {
             let rootca_desktop_path = Path::new(r"C:\Users")
                 .join(&win_usr_name.trim())
                 .join(r"Desktop\rootCA.crt");
-            fs::rename(rootca_file_path, rootca_desktop_path)?;
+            fs::copy(rootca_file_path, rootca_desktop_path)?;
             println!(
                 "请在桌面找到文件 {} ，双击文件进行导入证书，具体参考教程",
                 format_green("rootCA.crt")
@@ -218,6 +218,7 @@ pub mod Anki_ip {
                 format_green("1")
             );
             stdout().flush().unwrap();
+            //modify Ankidroid IP
             let mut inp3 = String::new();
             stdin().read_line(&mut inp3)?;
             if let "1" = inp3.trim() {
@@ -264,7 +265,6 @@ pub mod Anki_ip {
             "2" => {
                 //use https protocol
                 print_anki_options("2").unwrap();
-                //modify Ankidroid IP
             }
             _ => {}
         }

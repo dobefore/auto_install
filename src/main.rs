@@ -13,8 +13,8 @@ fn main() -> Result<()> {
     print_colors::write_green(&"-------------------------------------------")?;
     print_colors::print_green("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
     //refresh python version
-    let  py_ver="3.9";
-let python_ver="python3.9";
+    let py_ver = "3.9";
+    let python_ver = "python3.9";
     println!(
         "如果你的PC已安装了 {} 或除 {} 以外的py3版本，请卸载它们。。。",
         print_colors::format_green("py2"),
@@ -100,18 +100,19 @@ let python_ver="python3.9";
                 println!("根据你的输入，确认手机Anki 版本>=2.10");
                 //add PC Anki env variant
                 println!(
-                    "请按照教程图示添加 {}",
+                    "自动添加 {}到USER PATH",
                     print_colors::format_green("Anki环境变量")
                 );
-                println!(
-                    "如在本教程找不到相关内容,请把教程向上滑，点击Ankidroid2.10开头的网页链接"
-                );
+                let _set_ssl_path = Command::new("setx")
+                    .args(&["ANKI_NOVERIFYSSL", "1"])
+                    .status()
+                    .unwrap();
                 println!(
                     "{}",
                     print_colors::format_green("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
                 );
                 print!(
-                    "完成后输入数字 {} 并按回车键/enter继续下一步配置：",
+                    "输入数字 {} 并按回车键/enter继续下一步配置：",
                     print_colors::format_green("1")
                 );
                 stdout().flush().unwrap();
