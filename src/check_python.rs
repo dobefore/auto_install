@@ -23,7 +23,7 @@ pub mod check_python {
                     break Ok(());
                 }
                 _ => {
-                    println!("未正确安装python或未正确识别py文件,请重新打开auto_install安装python");
+                    println!("未正确安装python或未正确识别py文件,请关闭本页面重新打开auto_install");
                     Duration::from_secs(1);
                 }
             };

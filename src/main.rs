@@ -9,7 +9,7 @@ fn main() -> Result<()> {
     println!("开始运行Anki服务器首次配置引导程序。。。");
     println!("如你在程序运行过程中遇到阻挠，请咸鱼联系我哟");
     println!("请和教程结合使用(选中下面教程网址鼠标右键单击复制)");
-    println!("https://dobefore.github.io/%E6%90%AD%E5%BB%BA-Anki%E5%B1%80%E5%9F%9F%E7%BD%91%E5%90%8C%E6%AD%A5%E6%9C%8D%E5%8A%A1%E5%99%A8.html");
+    println!("https://sourl.cn/MQMR8w");
     print_colors::write_green(&"-------------------------------------------")?;
     print_colors::print_green("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
     //refresh python version

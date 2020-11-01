@@ -3,12 +3,12 @@ pub use Anki_ip::*;
 pub mod Anki_ip {
     use crate::print_colors::*;
     use std::fs;
-    use std::io::*;
+    use std::io::{*};
     use std::io::{self, Read};
     use std::path::{Path, PathBuf};
     use std::process::Command;
 
-    fn change_Ankidroid_ip_http() -> Result<()> {
+    fn  change_Ankidroid_ip_http() -> Result<()> {
         println!(
             "{}",
             print_colors::format_green("----------------------------------------------------")
