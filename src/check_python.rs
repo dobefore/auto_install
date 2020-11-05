@@ -1,6 +1,7 @@
 pub use check_python::*;
 pub mod check_python {
 
+<<<<<<< HEAD
     use std::io::{*};
     use std::str;
     use std::process::Command;
@@ -15,6 +16,12 @@ fn install_py(){
         let py_in_ = Command::new("python")
     .arg("-V")
     .output()
+=======
+            let mut file = File::create("check_python.txt")?;
+            let py_in = Command::new("python")
+                .args(&["check_python.py"])
+                .output()
+>>>>>>> b55fc6f95b61f55b10a6b9d2e26558af1982988a
     .expect("Failed to start print py-version process");
     let py_str=String::from_utf8(py_in_.stdout).unwrap();
    
@@ -25,6 +32,7 @@ match py_ver.as_str() {
     "3.9" => println!(),
     _ => {println!("检测到安装了3.9以外的python，请卸载重装3.9")},   
 }
+<<<<<<< HEAD
 }
 else{println!("未安装python,接下来启动安装程序");
 install_py();
@@ -38,4 +46,13 @@ let mut input1 = String::new();
     Ok(())
 }
 
+=======
+                _ => {
+                    println!("未正确安装python或未正确识别py文件,请关闭本页面重新打开auto_install");
+                    Duration::from_secs(1);
+}
+            };
+        }
+    }
+>>>>>>> b55fc6f95b61f55b10a6b9d2e26558af1982988a
 }
