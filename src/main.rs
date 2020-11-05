@@ -12,59 +12,17 @@ fn main() -> Result<()> {
     println!("https://sourl.cn/MQMR8w");
     print_colors::write_green(&"-------------------------------------------")?;
     print_colors::print_green("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    //refresh python version
-    let py_ver = "3.9";
-    let python_ver = "python3.9";
-    println!(
-        "如果你的PC已安装了 {} 或除 {} 以外的py3版本，请卸载它们。。。",
-        print_colors::format_green("py2"),
-        print_colors::format_green(&py_ver)
-    );
-    println!("如果你已卸载py或者没有安装python，输入数字  {}  并按回车键/enter安装py{}(请根据教程操作)：",print_colors::format_green("1"),&py_ver);
-    println!(
-        "如果你已安装 {} ，输入数字  {}  并按回车键/enter进行下一步操作",
-        print_colors::format_green(python_ver),
-        print_colors::format_green("2")
-    );
-    print!("你输入的数字为：");
-    stdout().flush().unwrap();
-    let mut input = String::new();
-    stdin().read_line(&mut input)?;
-    match input.trim() {
-        "1" => {
-            let _py_in = Command::new(r"pre_install\python-3.9.0-amd64.exe")
-                .output()
-                .expect("Failed to install python");
-        }
-        _ => {}
-    }
     check_python::check_python()?;
-    print!(
-        "输入数字 {} 进行复制模块操作：",
-        print_colors::format_green("1")
-    );
-    stdout().flush().unwrap();
-    let mut input1 = String::new();
-    stdin().read_line(&mut input1)?;
-    if let "1" = input1.trim() {
         //copy modules to python PATH
-        println!("copy modules");
+        println!("start copying modules");
         let _py_in_ = Command::new("python")
             .arg(r"pre_install\copy.py")
             .spawn()
             .expect("Failed to start copy module process")
             .wait_with_output();
-    }
+    
     println!("--------------------------------------------------------------------");
     //check Ankidroid version
-    print!(
-        "复制modules完成，输入数字  {}  并按回车键/enter继续下一步配置：",
-        print_colors::format_green("1")
-    );
-    stdout().flush().unwrap();
-    let mut input2 = String::new();
-    stdin().read_line(&mut input2)?;
-    if let "1" = input2.trim() {
         println!("请打开手机Anki查询版本（设置->高级设置-关于（往下翻））");
         println!(
             "如果 {} ,输入数字 {} 并按回车键/enter继续下一步配置：",
@@ -103,7 +61,7 @@ fn main() -> Result<()> {
                     "自动添加 {}到USER PATH",
                     print_colors::format_green("Anki环境变量")
                 );
-                let _set_ssl_path = Command::new("setx")
+                let _set_noverify_ssl_path = Command::new("setx")
                     .args(&["ANKI_NOVERIFYSSL", "1"])
                     .status()
                     .unwrap();
@@ -111,14 +69,6 @@ fn main() -> Result<()> {
                     "{}",
                     print_colors::format_green("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
                 );
-                print!(
-                    "输入数字 {} 并按回车键/enter继续下一步配置：",
-                    print_colors::format_green("1")
-                );
-                stdout().flush().unwrap();
-                let mut input4 = String::new();
-                stdin().read_line(&mut input4)?;
-                if let "1" = input4.trim() {
                     Anki_ip::win_anki_ver_handle("2");
                     // install local CA
                     Anki_ip::install_CA()?;
@@ -132,14 +82,14 @@ fn main() -> Result<()> {
                     if let "1" = input4.trim() {
                         Anki_exe::anki_send_desktop();
                     }
-                }
+                
             }
             _ => {
                 println!("输入错误，请退出重新开始");
                 // system break and exit
             }
         }
-    }
+    
 
     print!("引导程序完成，输入任意键退出安装过程。。。");
     stdout().flush().unwrap();

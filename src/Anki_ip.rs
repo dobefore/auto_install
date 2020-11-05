@@ -14,14 +14,6 @@ pub mod Anki_ip {
             print_colors::format_green("----------------------------------------------------")
         );
         println!("修改手机Anki IP");
-        print!(
-            "如PC Anki IP已修改，输入数字 {} 并按回车键/enter继续下一步配置：",
-            print_colors::format_green("1")
-        );
-        stdout().flush().unwrap();
-        let mut inp = String::new();
-        stdin().read_line(&mut inp)?;
-        if let "1" = inp.trim() {
             let mut ipa_ = String::new();
             fs::File::open(r"anki_server_v_2.1.26\anki-sync-server\server_txts\ip.txt")?
                 .read_to_string(&mut ipa_)?;
@@ -39,7 +31,7 @@ pub mod Anki_ip {
                 format_green(&ipa_.trim()),
                 format_green(":27701/msync")
             );
-        }
+        
         Ok(())
     }
     fn print_anki_options<'a>(ankidroid_ver: &'a str) -> io::Result<()> {
@@ -58,7 +50,6 @@ pub mod Anki_ip {
         stdout().flush().unwrap();
         let mut PC_anki_ver = String::new();
         io::stdin().read_line(&mut PC_anki_ver)?;
-        println!("ankidroid_ver{}", ankidroid_ver);
         match ankidroid_ver {
             "1" => {
                 //http
