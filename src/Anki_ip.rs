@@ -1,7 +1,6 @@
 pub use Anki_ip::*;
 
 pub mod Anki_ip {
-    use crate::print_colors::*;
     use std::fs;
     use std::io::{*};
     use std::io::{self, Read};
@@ -10,9 +9,8 @@ pub mod Anki_ip {
 
     fn  change_Ankidroid_ip_http() -> Result<()> {
         println!(
-            "{}",
-            print_colors::format_green("----------------------------------------------------")
-        );
+           "----------------------------------------------------")
+        ;
         println!("修改手机Anki IP");
             let mut ipa_ = String::new();
             fs::File::open(r"anki_server_v_2.1.26\anki-sync-server\server_txts\ip.txt")?
@@ -21,15 +19,15 @@ pub mod Anki_ip {
             println!("并将下行内容填在手机Anki的指定位置");
             println!(
                 "{}{}{}    (同步地址)",
-                format_green("http://"),
-                format_green(&ipa_.trim()),
-                format_green(":27701")
+                "http://",
+                &ipa_.trim(),
+                ":27701"
             );
             println!(
                 "{}{}{}   (媒体文件同步地址)",
-                format_green("http://"),
-                format_green(&ipa_.trim()),
-                format_green(":27701/msync")
+                "http://",
+                &ipa_.trim(),
+                ":27701/msync"
             );
         
         Ok(())
@@ -37,13 +35,13 @@ pub mod Anki_ip {
     fn print_anki_options<'a>(ankidroid_ver: &'a str) -> io::Result<()> {
         println!(
             "如果你的anki版本为 {}，输入数字 {} 并按回车键/enter复制插件",
-            print_colors::format_green("2.1.1~2.1.21"),
-            print_colors::format_green("1")
+            "2.1.1~2.1.21",
+            "1"
         );
         println!(
             "如果你的anki版本为 {}，输入数字 {} 并按回车键/enter复制插件",
-            print_colors::format_green("2.1.22~2.1.26"),
-            print_colors::format_green("2")
+            "2.1.22~2.1.26",
+            "2"
         );
         //println!("如果你的anki版本为 {}，输入数字 {} 并按回车键/enter复制插件",print_colors::format_green("2.1.1~2.1.21"),print_colors::format_green("3"));
         print!("你要输入的数字为：");
@@ -59,7 +57,7 @@ pub mod Anki_ip {
                         //modify PC anki IP
                         println!(
                             "接下来将自动修改 {}，请稍等。。。",
-                            format_green("电脑Anki IP")
+                            "电脑Anki IP"
                         );
                         fs::write(r"pre_install\write_nu.txt", b"1")?;
                         let _py_in_ = Command::new("python")
@@ -72,7 +70,7 @@ pub mod Anki_ip {
                         //modify PC anki IP
                         println!(
                             "接下来将自动修改 {}，请稍等。。。",
-                            format_green("电脑Anki IP")
+                           "电脑Anki IP"
                         );
                         fs::write(r"pre_install\write_nu.txt", b"2")?;
                         let _py_in_ = Command::new("python")
@@ -91,7 +89,7 @@ pub mod Anki_ip {
                         //modify PC anki IP
                         println!(
                             "接下来将自动修改 {}，请稍等。。。",
-                            format_green("电脑Anki IP")
+                            "电脑Anki IP"
                         );
                         fs::write(r"pre_install\write_nu.txt", b"1")?;
                         let _py_in_ = Command::new("python")
@@ -105,7 +103,7 @@ pub mod Anki_ip {
                         //modify PC anki IP
                         println!(
                             "接下来将自动修改 {}，请稍等。。。",
-                            format_green("电脑Anki IP")
+                            "电脑Anki IP"
                         );
                         fs::write(r"pre_install\write_nu.txt", b"2")?;
                         let _py_in_ = Command::new("python")
@@ -124,8 +122,8 @@ pub mod Anki_ip {
     pub fn install_CA() -> Result<()> {
         println!(
             "{}",
-            print_colors::format_green("----------------------------------------------")
-        );
+            "----------------------------------------------")
+        ;
         println!("安装Local CA。。。,如有弹出框，点击确认");
         let _py_in_ = Command::new(r"ssl certificate\mkcert-v1.4.1-windows-amd64.exe")
             .arg(r"-install")
@@ -134,7 +132,7 @@ pub mod Anki_ip {
             .wait_with_output();
         print!(
             "确认安装后输入数字 {} 并按回车键/enter继续下一步配置：",
-            format_green("1")
+            "1"
         );
         stdout().flush().unwrap();
         let mut inp0 = String::new();
@@ -157,20 +155,20 @@ pub mod Anki_ip {
             fs::copy(rootca_file_path, rootca_desktop_path)?;
             println!(
                 "请在桌面找到文件 {} ，双击文件进行导入证书，具体参考教程",
-                format_green("rootCA.crt")
+                "rootCA.crt"
             );
             println!(
                 "请把桌面上的文件 {} 复制到手机（QQ或USB数据线）",
-                format_green("rootCA.crt")
+                "rootCA.crt"
             );
         }
         println!(
             "{}",
-            print_colors::format_green("------------------------------------------------")
-        );
+            "------------------------------------------------")
+        ;
         print!(
             "确认PC导入证书且将证书复制到手机，输入数字 {} 并按回车键/enter继续下一步配置：",
-            format_green("1")
+            "1"
         );
         stdout().flush().unwrap();
         //generate server ca and key
@@ -194,19 +192,19 @@ pub mod Anki_ip {
             println!("已导入服务器证书和密钥");
             println!(
                 "{}",
-                print_colors::format_green("---------------------------------------------")
-            );
+                "---------------------------------------------")
+            ;
             //Ankidroid ca import
-            println!("{}", format_green("--------------------------------------"));
+            println!("--------------------------------------");
             println!("接下来是手机CA证书安装");
             println!(
                 "进入手机QQ/TIM或文件浏览器，找到文件 {}，触摸打开",
-                format_green("rootCA.crt")
+               "rootCA.crt"
             );
             println!("证书名称随意填");
             print!(
                 "如手机证书已安装，输入数字 {} 并按回车键/enter继续下一步配置：",
-                format_green("1")
+                "1"
             );
             stdout().flush().unwrap();
             //modify Ankidroid IP
@@ -226,16 +224,15 @@ pub mod Anki_ip {
                 println!("并将下行内容填在手机Anki的指定位置");
                 println!(
                     "{}{}{}    (同步地址)",
-                    format_green("https://"),
-                    format_green(&ipa_.trim()),
-                    format_green(":27701")
+                    "https://",
+                    &ipa_.trim(),
+                    ":27701"
                 );
                 println!(
                     "{}{}{}   (媒体文件同步地址)",
-                    format_green("https://"),
-                    format_green(&ipa_.trim()),
-                    format_green(":27701/msync")
-                );
+                   "https://",
+                    &ipa_.trim(),
+            ":27701/msync")
             }
         }
 

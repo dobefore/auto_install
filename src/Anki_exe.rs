@@ -1,6 +1,5 @@
 pub use Anki_exe::*;
 pub mod Anki_exe {
-    use crate::print_colors::*;
     use std::io::*;
     use std::process::Command;
 
@@ -12,19 +11,15 @@ pub mod Anki_exe {
             .wait_with_output();
         println!("已将anki服务器软件发送到桌面快捷方式");
         println!(
-            "在桌面找到刚发送的anki_server，双击打开,点击按钮 {}，如教程图所示",
-            format_green("添加账号")
+            "在桌面找到刚发送的anki_server，双击打开,点击按钮 添加账号，如教程图所示"
         );
         println!(
-            "点击按钮{}，即可打开同步服务，如教程图所示即表示正常",
-            format_green("打开服务器")
+            "点击按钮 打开服务器，即可打开同步服务，如教程图所示即表示正常"
         );
         println!(
-            "{}",
-            format_green("------------------------------------------------------------")
-        );
-        println!("如出现命令行窗口闪退，输入数字 {}", format_green("1"));
-        println!("如能正常打开，输入数字 {}", format_green("2"));
+            "------------------------------------------------------------");
+        println!("如出现命令行窗口闪退，输入数字 1");
+        println!("如能正常打开，输入数字 2");
         print!("输入的数字为：");
         stdout().flush().unwrap();
         let mut inp1 = String::new();
@@ -38,9 +33,7 @@ pub mod Anki_exe {
                     .wait_with_output();
                 println!("已重新将anki服务器软件发送到桌面快捷方式");
                 println!(
-                    "在桌面找到刚发送的{}，双击打开,点击按钮 {}，如教程图所示",
-                    format_green("anki_server_alt"),
-                    format_green("打开服务器")
+                    "在桌面找到刚发送的 anki_server_alt，双击打开,点击按钮 打开服务器，如教程图所示"
                 );
             }
             _ => {}

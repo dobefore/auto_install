@@ -4,14 +4,13 @@ mod Anki_exe;
 #[warn(non_snake_case)]
 mod Anki_ip;
 mod check_python;
-mod print_colors;
 fn main() -> Result<()> {
     println!("开始运行Anki服务器首次配置引导程序。。。");
     println!("如你在程序运行过程中遇到阻挠，请咸鱼联系我哟");
     println!("请和教程结合使用(选中下面教程网址鼠标右键单击复制)");
     println!("https://sourl.cn/MQMR8w");
-    print_colors::write_green(&"-------------------------------------------")?;
-    print_colors::print_green("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+    println!("-------------------------------------------");
+    println!("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
     check_python::check_python()?;
         //copy modules to python PATH
         println!("start copying modules");
@@ -26,13 +25,13 @@ fn main() -> Result<()> {
         println!("请打开手机Anki查询版本（设置->高级设置-关于（往下翻））");
         println!(
             "如果 {} ,输入数字 {} 并按回车键/enter继续下一步配置：",
-            print_colors::format_green("<2.10"),
-            print_colors::format_green("1")
+            "<2.10",
+            "1"
         );
         println!(
             "如果 {} ,输入数字 {} 并按回车键/enter继续下一步配置：",
-            print_colors::format_green(">=2.10"),
-            print_colors::format_green("2")
+            ">=2.10",
+            "2"
         );
         print!("你要输入的数字为：");
         stdout().flush().unwrap();
@@ -45,7 +44,7 @@ fn main() -> Result<()> {
                 Anki_ip::win_anki_ver_handle("1");
                 print!(
                     "如手机Anki IP以修改，输入数字 {} 并按回车键/enter继续下一步配置：",
-                    print_colors::format_green("1")
+                    "1"
                 );
                 stdout().flush().unwrap();
                 let mut input4 = String::new();
@@ -59,7 +58,7 @@ fn main() -> Result<()> {
                 //add PC Anki env variant
                 println!(
                     "自动添加 {}到USER PATH",
-                    print_colors::format_green("Anki环境变量")
+                    "Anki环境变量"
                 );
                 let _set_noverify_ssl_path = Command::new("setx")
                     .args(&["ANKI_NOVERIFYSSL", "1"])
@@ -67,14 +66,14 @@ fn main() -> Result<()> {
                     .unwrap();
                 println!(
                     "{}",
-                    print_colors::format_green("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+                    "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
                 );
                     Anki_ip::win_anki_ver_handle("2");
                     // install local CA
                     Anki_ip::install_CA()?;
                     print!(
                         "如手机Anki IP以修改，输入数字 {} 并按回车键/enter继续下一步配置：",
-                        print_colors::format_green("1")
+                        "1"
                     );
                     stdout().flush().unwrap();
                     let mut input4 = String::new();
