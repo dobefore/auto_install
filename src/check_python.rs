@@ -28,7 +28,7 @@ match py_ver.as_str() {
 }
 else{println!("未安装python,接下来启动安装程序");
 install_py();
-print!("安装后，请按回车键/enter退出重新点击auto_install");
+print!("安装后，请按回车键/enter退出重新点击auto_install_for_Win7");
 stdout().flush().unwrap();
 let mut input1 = String::new();
     stdin().read_line(&mut input1)?;
