@@ -2,36 +2,37 @@ pub use Anki_ip::*;
 
 pub mod Anki_ip {
     use crate::print_colors::*;
+    use crate::walk_dir::*;
     use std::fs;
-    use std::io::{*};
+    use std::io::*;
     use std::io::{self, Read};
-    use std::path::{Path, PathBuf};
+    use std::path::Path;
     use std::process::Command;
 
-    fn  change_Ankidroid_ip_http() -> Result<()> {
+    fn change_Ankidroid_ip_http() -> Result<()> {
         println!(
             "{}",
             print_colors::format_green("----------------------------------------------------")
         );
         println!("修改手机Anki IP");
-            let mut ipa_ = String::new();
-            fs::File::open(r"anki_server_v_2.1.26\anki-sync-server\server_txts\ip.txt")?
-                .read_to_string(&mut ipa_)?;
-            println!("请在文件夹目录-->电脑端和手机端anki的配置里打开安卓手机anki设置的图片");
-            println!("并将下行内容填在手机Anki的指定位置");
-            println!(
-                "{}{}{}    (同步地址)",
-                format_green("http://"),
-                format_green(&ipa_.trim()),
-                format_green(":27701")
-            );
-            println!(
-                "{}{}{}   (媒体文件同步地址)",
-                format_green("http://"),
-                format_green(&ipa_.trim()),
-                format_green(":27701/msync")
-            );
-        
+        let mut ipa_ = String::new();
+        fs::File::open(r"anki_server_v_2.1.26\anki-sync-server\server_txts\ip.txt")?
+            .read_to_string(&mut ipa_)?;
+        println!("请在文件夹目录-->电脑端和手机端anki的配置里打开安卓手机anki设置的图片");
+        println!("并将下行内容填在手机Anki的指定位置");
+        println!(
+            "{}{}{}    (同步地址)",
+            format_green("http://"),
+            format_green(&ipa_.trim()),
+            format_green(":27701")
+        );
+        println!(
+            "{}{}{}   (媒体文件同步地址)",
+            format_green("http://"),
+            format_green(&ipa_.trim()),
+            format_green(":27701/msync")
+        );
+
         Ok(())
     }
     fn print_anki_options<'a>(ankidroid_ver: &'a str) -> io::Result<()> {
@@ -61,7 +62,7 @@ pub mod Anki_ip {
                             "接下来将自动修改 {}，请稍等。。。",
                             format_green("电脑Anki IP")
                         );
-                        fs::write(r"pre_install\write_nu.txt", b"1")?;
+                        fs::write(r"pre_install\addon_choice_num.txt", b"1")?;
                         let _py_in_ = Command::new("python")
                             .arg(r"anki_server_v_2.1.26\anki-sync-server\auto_ch_IP.py")
                             .spawn()
@@ -74,7 +75,7 @@ pub mod Anki_ip {
                             "接下来将自动修改 {}，请稍等。。。",
                             format_green("电脑Anki IP")
                         );
-                        fs::write(r"pre_install\write_nu.txt", b"2")?;
+                        fs::write(r"pre_install\addon_choice_num.txt", b"2")?;
                         let _py_in_ = Command::new("python")
                             .arg(r"anki_server_v_2.1.26\anki-sync-server\auto_ch_IP.py")
                             .spawn()
@@ -93,7 +94,7 @@ pub mod Anki_ip {
                             "接下来将自动修改 {}，请稍等。。。",
                             format_green("电脑Anki IP")
                         );
-                        fs::write(r"pre_install\write_nu.txt", b"1")?;
+                        fs::write(r"pre_install\addon_choice_num.txt", b"1")?;
                         let _py_in_ = Command::new("python")
                             .arg(r"anki_server_v_2.1.26\anki-sync-server\auto_ch_IP_https.py")
                             .spawn()
@@ -107,7 +108,7 @@ pub mod Anki_ip {
                             "接下来将自动修改 {}，请稍等。。。",
                             format_green("电脑Anki IP")
                         );
-                        fs::write(r"pre_install\write_nu.txt", b"2")?;
+                        fs::write(r"pre_install\addon_choice_num.txt", b"2")?;
                         let _py_in_ = Command::new("python")
                             .arg(r"anki_server_v_2.1.26\anki-sync-server\auto_ch_IP_https.py")
                             .spawn()
@@ -139,9 +140,12 @@ pub mod Anki_ip {
         stdout().flush().unwrap();
         let mut inp0 = String::new();
         stdin().read_line(&mut inp0)?;
+
         if let "1" = inp0.trim() {
             println!("复制CA证书到桌面。。。");
-            // get win_usr name and rename rootca.pem to .crt send to desktop
+            // get win_usr name and rename rootca.pem to .crt
+            // and then send it to desktop
+
             let mut win_usr_name = String::new();
             fs::File::open(
                 r".\anki_server_v_2.1.26\anki-sync-server\server_txts\win_username.txt",
@@ -155,6 +159,16 @@ pub mod Anki_ip {
                 .join(&win_usr_name.trim())
                 .join(r"Desktop\rootCA.crt");
             fs::copy(rootca_file_path, rootca_desktop_path)?;
+            // add a function to check if rootCA.crt is in desktop
+            // if not,use walkdir in C:\\ to search for rootCA.pem
+            // and then rename it
+
+            // return false,if rootCA.crt not in Desktop,
+            // then follow two-line codes will be excueted!
+            if !walk_dir::check_CA_Desktop() {
+                walk_dir::resend_CA_desk_use_py();
+            }
+
             println!(
                 "请在桌面找到文件 {} ，双击文件进行导入证书，具体参考教程",
                 format_green("rootCA.crt")
