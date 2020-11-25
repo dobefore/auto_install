@@ -1,46 +1,37 @@
 pub use Anki_ip::*;
 #[allow(non_snake_case)]
 pub mod Anki_ip {
+    use crate::walk_dir;
     use std::fs;
-    use std::io::{self,Write, Read,Result,stdout,stdin};
+    use std::io::{self, stdin, stdout, Read, Result, Write};
     use std::path::Path;
     use std::process::Command;
-use crate::walk_dir;
-    fn  change_Ankidroid_ip_http() -> Result<()> {
-        println!(
-           "----------------------------------------------------")
-        ;
+    fn change_Ankidroid_ip_http() -> Result<()> {
+        println!("----------------------------------------------------");
         println!("修改手机Anki IP");
-            let mut ipa_ = String::new();
-            fs::File::open(r"anki_server_v_2.1.26\anki-sync-server\server_txts\ip.txt")?
-                .read_to_string(&mut ipa_)?;
-            println!("请在文件夹目录-->电脑端和手机端anki的配置里打开安卓手机anki设置的图片");
-            println!("并将下行内容填在手机Anki的指定位置");
-            println!(
-                "{}{}{}    (同步地址)",
-                "http://",
-                &ipa_.trim(),
-                ":27701"
-            );
-            println!(
-                "{}{}{}   (媒体文件同步地址)",
-                "http://",
-                &ipa_.trim(),
-                ":27701/msync"
-            );
-        
+        let mut ipa_ = String::new();
+        fs::File::open(r"anki_server_v_2.1.26\anki-sync-server\server_txts\ip.txt")?
+            .read_to_string(&mut ipa_)?;
+        println!("请在文件夹目录-->电脑端和手机端anki的配置里打开安卓手机anki设置的图片");
+        println!("并将下行内容填在手机Anki的指定位置");
+        println!("{}{}{}    (同步地址)", "http://", &ipa_.trim(), ":27701");
+        println!(
+            "{}{}{}   (媒体文件同步地址)",
+            "http://",
+            &ipa_.trim(),
+            ":27701/msync"
+        );
+
         Ok(())
     }
     fn print_anki_options<'a>(ankidroid_ver: &'a str) -> io::Result<()> {
         println!(
             "如果你的anki版本为 {}，输入数字 {} 并按回车键/enter复制插件",
-            "2.1.1~2.1.21",
-            "1"
+            "2.1.1~2.1.21", "1"
         );
         println!(
             "如果你的anki版本为 {}，输入数字 {} 并按回车键/enter复制插件",
-            "2.1.22~2.1.26",
-            "2"
+            "2.1.22~2.1.26", "2"
         );
         //println!("如果你的anki版本为 {}，输入数字 {} 并按回车键/enter复制插件",print_colors::format_green("2.1.1~2.1.21"),print_colors::format_green("3"));
         print!("你要输入的数字为：");
@@ -54,10 +45,7 @@ use crate::walk_dir;
                 match PC_anki_ver.trim() {
                     "1" => {
                         //modify PC anki IP
-                        println!(
-                            "接下来将自动修改 {}，请稍等。。。",
-                            "电脑Anki IP"
-                        );
+                        println!("接下来将自动修改 {}，请稍等。。。", "电脑Anki IP");
                         fs::write(r"pre_install\write_nu.txt", b"1")?;
                         let _py_in_ = Command::new("python")
                             .arg(r"anki_server_v_2.1.26\anki-sync-server\auto_ch_IP.py")
@@ -67,10 +55,7 @@ use crate::walk_dir;
                     }
                     "2" => {
                         //modify PC anki IP
-                        println!(
-                            "接下来将自动修改 {}，请稍等。。。",
-                           "电脑Anki IP"
-                        );
+                        println!("接下来将自动修改 {}，请稍等。。。", "电脑Anki IP");
                         fs::write(r"pre_install\write_nu.txt", b"2")?;
                         let _py_in_ = Command::new("python")
                             .arg(r"anki_server_v_2.1.26\anki-sync-server\auto_ch_IP.py")
@@ -86,10 +71,7 @@ use crate::walk_dir;
                 match PC_anki_ver.trim() {
                     "1" => {
                         //modify PC anki IP
-                        println!(
-                            "接下来将自动修改 {}，请稍等。。。",
-                            "电脑Anki IP"
-                        );
+                        println!("接下来将自动修改 {}，请稍等。。。", "电脑Anki IP");
                         fs::write(r"pre_install\write_nu.txt", b"1")?;
                         let _py_in_ = Command::new("python")
                             .arg(r"anki_server_v_2.1.26\anki-sync-server\auto_ch_IP_https.py")
@@ -100,10 +82,7 @@ use crate::walk_dir;
 
                     "2" => {
                         //modify PC anki IP
-                        println!(
-                            "接下来将自动修改 {}，请稍等。。。",
-                            "电脑Anki IP"
-                        );
+                        println!("接下来将自动修改 {}，请稍等。。。", "电脑Anki IP");
                         fs::write(r"pre_install\write_nu.txt", b"2")?;
                         let _py_in_ = Command::new("python")
                             .arg(r"anki_server_v_2.1.26\anki-sync-server\auto_ch_IP_https.py")
@@ -119,10 +98,7 @@ use crate::walk_dir;
         Ok(())
     }
     pub fn install_CA() -> Result<()> {
-        println!(
-            "{}",
-            "----------------------------------------------")
-        ;
+        println!("{}", "----------------------------------------------");
         println!("安装Local CA。。。,如有弹出框，点击确认");
         let _py_in_ = Command::new(r"ssl certificate\mkcert-v1.4.1-windows-amd64.exe")
             .arg(r"-install")
@@ -154,7 +130,7 @@ use crate::walk_dir;
             fs::copy(rootca_file_path, rootca_desktop_path)?;
             // check if rootCA is in desktop,if not,
             // resend it to desktop using py script
-            if !walk_dir::check_CA_Desktop(){
+            if !walk_dir::check_CA_Desktop() {
                 walk_dir::resend_CA_desk_use_py()
             }
             println!(
@@ -166,10 +142,7 @@ use crate::walk_dir;
                 "rootCA.crt"
             );
         }
-        println!(
-            "{}",
-            "------------------------------------------------")
-        ;
+        println!("{}", "------------------------------------------------");
         print!(
             "确认PC导入证书且将证书复制到手机，输入数字 {} 并按回车键/enter继续下一步配置：",
             "1"
@@ -194,16 +167,13 @@ use crate::walk_dir;
                 .expect("Failed to start generating server ca and key process")
                 .wait_with_output();
             println!("已导入服务器证书和密钥");
-            println!(
-                "{}",
-                "---------------------------------------------")
-            ;
+            println!("{}", "---------------------------------------------");
             //Ankidroid ca import
             println!("--------------------------------------");
             println!("接下来是手机CA证书安装");
             println!(
                 "进入手机QQ/TIM或文件浏览器，找到文件 {}，触摸打开",
-               "rootCA.crt"
+                "rootCA.crt"
             );
             println!("证书名称随意填");
             print!(
@@ -226,17 +196,13 @@ use crate::walk_dir;
                     .read_to_string(&mut ipa_)?;
                 println!("请在文件夹目录-->电脑端和手机端anki的配置里打开安卓手机anki设置的图片");
                 println!("并将下行内容填在手机Anki的指定位置");
-                println!(
-                    "{}{}{}    (同步地址)",
-                    "https://",
-                    &ipa_.trim(),
-                    ":27701"
-                );
+                println!("{}{}{}    (同步地址)", "https://", &ipa_.trim(), ":27701");
                 println!(
                     "{}{}{}   (媒体文件同步地址)",
-                   "https://",
+                    "https://",
                     &ipa_.trim(),
-            ":27701/msync")
+                    ":27701/msync"
+                )
             }
         }
 
