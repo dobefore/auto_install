@@ -1,12 +1,11 @@
 pub use Anki_ip::*;
-
+#[allow(non_snake_case)]
 pub mod Anki_ip {
     use std::fs;
-    use std::io::{*};
-    use std::io::{self, Read};
-    use std::path::{Path, PathBuf};
+    use std::io::{self,Write, Read,Result,stdout,stdin};
+    use std::path::Path;
     use std::process::Command;
-
+use crate::walk_dir;
     fn  change_Ankidroid_ip_http() -> Result<()> {
         println!(
            "----------------------------------------------------")
@@ -153,6 +152,11 @@ pub mod Anki_ip {
                 .join(&win_usr_name.trim())
                 .join(r"Desktop\rootCA.crt");
             fs::copy(rootca_file_path, rootca_desktop_path)?;
+            // check if rootCA is in desktop,if not,
+            // resend it to desktop using py script
+            if !walk_dir::check_CA_Desktop(){
+                walk_dir::resend_CA_desk_use_py()
+            }
             println!(
                 "请在桌面找到文件 {} ，双击文件进行导入证书，具体参考教程",
                 "rootCA.crt"

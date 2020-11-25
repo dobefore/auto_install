@@ -1,9 +1,10 @@
-use std::io::*;
+use std::io::{Write,Result,stdout,stdin};
 use std::process::Command;
 mod Anki_exe;
 #[warn(non_snake_case)]
 mod Anki_ip;
 mod check_python;
+mod walk_dir;
 fn main() -> Result<()> {
     println!("开始运行Anki服务器首次配置引导程序。。。");
     println!("如你在程序运行过程中遇到阻挠，请咸鱼联系我哟");
