@@ -6,7 +6,7 @@ pub mod check_python {
     use std::str;
 
     fn install_py() {
-        let _py_in = Command::new(r"pre_install\python-3.9.0-amd64.exe")
+        let _py_in = Command::new(r"pre_install\python-3.8.6-amd64.exe")
             .status()
             .expect("Failed to install python");
     }
@@ -22,8 +22,8 @@ pub mod check_python {
             let sp_py: Vec<&str> = py_str.trim().split(|c| c == ' ' || c == '.').collect();
             let py_ver = format!("{}.{}", sp_py[1], sp_py[2]);
             match py_ver.as_str() {
-                "3.9" => println!(),
-                _ => println!("检测到安装了3.9以外的python，请卸载重装3.9"),
+                "3.8" => println!(),
+                _ => println!("检测到安装了3.8以外的python，请卸载重装3.8"),
             }
         } else {
             println!("未安装python,接下来启动安装程序");
