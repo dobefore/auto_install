@@ -3,5 +3,5 @@ windows custom anki-sync-server deploy helper
 ---
 **Requirements:**
 ---
-- python3.9
+- python3.8
 - Windows platform
