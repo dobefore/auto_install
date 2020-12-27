@@ -1,5 +1,5 @@
 pub use check_pc_anki_ver::{output_pc_anki_ver, PcAnkiVer};
-//types: 2.1.36 、 2.1.26 and before
+//types: 2.1.36 and later 、 2.1.26 and before
 pub mod check_pc_anki_ver {
     use std::fs::File;
     use std::io::{BufReader, Read};
@@ -7,7 +7,7 @@ pub mod check_pc_anki_ver {
     use std::process::Command;
     pub enum PcAnkiVer {
         Ver22,
-        Ver36,
+        Ver36,//36 and later
         Ver26,
         VerErr, //28-35
     }
@@ -29,7 +29,7 @@ pub mod check_pc_anki_ver {
         match ver {
             Ok(_x @ 10..=22) => return PcAnkiVer::Ver22,
             Ok(_x @ 23..=26) => return PcAnkiVer::Ver26,
-            Ok(36) => return PcAnkiVer::Ver36,
+            Ok(_x ) if _x>=36=> return PcAnkiVer::Ver36,
             //28-35
             _ => return PcAnkiVer::VerErr,
         }
