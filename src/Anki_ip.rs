@@ -3,9 +3,8 @@ pub use Anki_ip::*;
 pub mod Anki_ip {
     use crate::print_colors::*;
     use crate::walk_dir::*;
-    use std::fs;
-    use std::io::*;
-    use std::io::{self, Read};
+    use std::fs::{self, OpenOptions};
+    use std::io::{self, stdin, stdout, BufRead, BufReader, Read, Result, Write};
     use std::path::Path;
     use std::process::Command;
 
@@ -16,10 +15,18 @@ pub mod Anki_ip {
             .trim()
             .parse::<u8>()
             .unwrap();
-        let ip_addr_path = if addon_choice_num == 3 {
-            r"anki_server_v_2.1.36\server_txts\ip.txt"
+        let (ip_addr_path, port, port_media) = if addon_choice_num == 3 {
+            (
+                r"anki_server_v_2.1.36\server_txts\ip.txt",
+                ":27702",
+                ":27702/msync",
+            )
         } else {
-            r"anki_server_v_2.1.26\anki-sync-server\server_txts\ip.txt"
+            (
+                r"anki_server_v_2.1.26\anki-sync-server\server_txts\ip.txt",
+                ":27701",
+                ":27701/msync",
+            )
         };
 
         println!(
@@ -35,13 +42,13 @@ pub mod Anki_ip {
             "{}{}{}    (同步地址)",
             format_green("http://"),
             format_green(&ipa_.trim()),
-            format_green(":27701")
+            format_green(&port)
         );
         println!(
             "{}{}{}   (媒体文件同步地址)",
             format_green("http://"),
             format_green(&ipa_.trim()),
-            format_green(":27701/msync")
+            format_green(&port_media)
         );
 
         Ok(())
@@ -96,6 +103,40 @@ pub mod Anki_ip {
                     .wait_with_output();
         }
     }
+    fn cp_nginx_https_to_nginx_conf() {
+        // only for pc anki ver >=2.1.36
+        //    cp nginx_http to nginx (rename)
+        let nginx_conf_http_path_rel = r"anki_server_v_2.1.36\conf\nginx_https.conf";
+        let nginx_conf_path_rel = r"anki_server_v_2.1.36\conf\nginx.conf";
+        fs::copy(nginx_conf_http_path_rel, nginx_conf_path_rel).unwrap();
+    }
+    fn change_nginx_conf_http() {
+        // only for pc anki ver >=2.1.36
+
+        // read ip from txt
+        let ip_addr_path_rel = r"anki_server_v_2.1.36\server_txts\ip.txt";
+        let ip_string = String::from(fs::read_to_string(&ip_addr_path_rel).unwrap().trim());
+        //    cp nginx_http to nginx (rename)
+        let nginx_conf_http_path_rel = r"anki_server_v_2.1.36\conf\nginx_http.conf";
+        let nginx_conf_path_rel = r"anki_server_v_2.1.36\conf\nginx.conf";
+        fs::copy(nginx_conf_http_path_rel, nginx_conf_path_rel).unwrap();
+        // change ip addr in nginx conf
+        let mut f_conf = OpenOptions::new()
+            .truncate(true)
+            .write(true)
+            .open(nginx_conf_path_rel)
+            .unwrap();
+        let f_http_conf = fs::File::open(nginx_conf_http_path_rel).unwrap();
+        let reader_http = BufReader::new(f_http_conf);
+        for line in reader_http.lines() {
+            let line_ = line.unwrap();
+            if line_.contains("server_name") {
+                writeln!(f_conf, "{}   {};", "server_name", &ip_string).unwrap();
+            } else {
+                writeln!(f_conf, "{}", line_.trim()).unwrap();
+            }
+        }
+    }
     fn cp_addon_modify_pc_anki_ip<'a>(ankidroid_ver: &'a str, pc_anki_ver: &str) -> io::Result<()> {
         println!(
             "接下来将自动修改 {}，请稍等。。。",
@@ -119,7 +160,9 @@ pub mod Anki_ip {
                     "3" => {
                         //modify PC anki IP
                         write_start_server_choice_num(2);
-                        excuete_change_pc_anki_ip_http("3")
+                        excuete_change_pc_anki_ip_http("3");
+                        // change nginx conf:ip addr
+                        change_nginx_conf_http();
                     }
                     _ => {}
                 }
@@ -141,7 +184,8 @@ pub mod Anki_ip {
                     "3" => {
                         //modify PC anki IP
                         write_start_server_choice_num(3);
-                        excuete_change_pc_anki_ip_https("3")
+                        excuete_change_pc_anki_ip_https("3");
+                        cp_nginx_https_to_nginx_conf();
                     }
                     _ => {}
                 }
