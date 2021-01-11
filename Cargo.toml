@@ -9,3 +9,9 @@ edition = "2018"
 [dependencies]
 termcolor = "1.1"
 walkdir = "2.3.1"
+
+[patch.crates-io]
+# local module file/dir
+
+[[example]]
+name="kill_nginx"
