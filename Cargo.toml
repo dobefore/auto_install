@@ -1,9 +1,9 @@
 [package]
-name = "auto_install_for_Win7"
+name = "deploy_helper"
 version = "0.1.0"
 authors = ["Admin"]
 edition = "2018"
-
+descriptions="for win7 and cannot be read pc anki ver from regedit"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
