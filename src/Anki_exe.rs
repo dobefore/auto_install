@@ -3,9 +3,9 @@ pub use Anki_exe::anki_send_desktop;
 pub mod Anki_exe {
     use std::fs;
     use std::process::Command;
-    
+
     pub fn anki_send_desktop() {
-       // send anki_server.exe to desktop using py scripts
+        // send anki_server.exe to desktop using py scripts
 
         //read addon choice num from txt
         let addon_num = fs::read_to_string(r"pre_install\addon_choice_num.txt")

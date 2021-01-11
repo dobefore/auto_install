@@ -2,8 +2,8 @@ pub use Anki_ip::*;
 #[allow(non_snake_case)]
 pub mod Anki_ip {
     use crate::walk_dir;
-    use std::fs;
-    use std::io::{self, stdin, stdout, Read, Result, Write};
+    use std::fs::{self, OpenOptions};
+    use std::io::{self, stdin, stdout, BufRead, BufReader, Read, Result, Write};
     use std::path::Path;
     use std::process::Command;
 
@@ -14,62 +14,32 @@ pub mod Anki_ip {
             .trim()
             .parse::<u8>()
             .unwrap();
-        let ip_addr_path = if addon_choice_num == 3 {
-            r"anki_server_v_2.1.36\server_txts\ip.txt"
+        let (ip_addr_path, port, port_media) = if addon_choice_num == 3 {
+            (
+                r"anki_server_v_2.1.36\server_txts\ip.txt",
+                ":27702",
+                ":27702/msync",
+            )
         } else {
-            r"anki_server_v_2.1.26\anki-sync-server\server_txts\ip.txt"
+            (
+                r"anki_server_v_2.1.26\anki-sync-server\server_txts\ip.txt",
+                ":27701",
+                ":27701/msync",
+            )
         };
 
-        println!(
-            "{}",
-            "----------------------------------------------------"
-        );
+        println!("{}", "----------------------------------------------------");
         println!("修改手机Anki IP");
         let mut ipa_ = String::new();
         fs::File::open(&ip_addr_path)?.read_to_string(&mut ipa_)?;
         println!("请在文件夹目录-->电脑端和手机端anki的配置里打开安卓手机anki设置的图片");
         println!("并将下行内容填在手机Anki的指定位置");
-        println!(
-            "{}{}{}    (同步地址)",
-            "http://",
-            &ipa_.trim(),
-            ":27701"
-        );
+        println!("{}{}{}    (同步地址)", "http://", &ipa_.trim(), &port);
         println!(
             "{}{}{}   (媒体文件同步地址)",
             "http://",
             &ipa_.trim(),
-            ":27701/msync"
-        );
-
-        Ok(())
-    }
-
-    fn change_Ankidroid_ip_http() -> Result<()> {
-        // read addon choice num from txt
-        let addon_choice_num = fs::read_to_string(r"pre_install\addon_choice_num.txt")
-            .unwrap()
-            .trim()
-            .parse::<u8>()
-            .unwrap();
-        let ip_addr_path = if addon_choice_num == 3 {
-            r"anki_server_v_2.1.36\server_txts\ip.txt"
-        } else {
-            r"anki_server_v_2.1.26\anki-sync-server\server_txts\ip.txt"
-        };
-       
-        println!("----------------------------------------------------");
-        println!("修改手机Anki IP");
-        let mut ipa_ = String::new();
-        fs::File::open(&ip_addr_path)?.read_to_string(&mut ipa_)?;
-        println!("请在文件夹目录-->电脑端和手机端anki的配置里打开安卓手机anki设置的图片");
-        println!("并将下行内容填在手机Anki的指定位置");
-        println!("{}{}{}    (同步地址)", "http://", &ipa_.trim(), ":27701");
-        println!(
-            "{}{}{}   (媒体文件同步地址)",
-            "http://",
-            &ipa_.trim(),
-            ":27701/msync"
+            &port_media
         );
 
         Ok(())
@@ -127,12 +97,42 @@ pub mod Anki_ip {
                     .wait_with_output();
         }
     }
+    fn cp_nginx_https_to_nginx_conf() {
+        // only for pc anki ver >=2.1.36
+        //    cp nginx_http to nginx (rename)
+        let nginx_conf_http_path_rel = r"anki_server_v_2.1.36\conf\nginx_https.conf";
+        let nginx_conf_path_rel = r"anki_server_v_2.1.36\conf\nginx.conf";
+        fs::copy(nginx_conf_http_path_rel, nginx_conf_path_rel).unwrap();
+    }
+    fn change_nginx_conf_http() {
+        // only for pc anki ver >=2.1.36
 
+        // read ip from txt
+        let ip_addr_path_rel = r"anki_server_v_2.1.36\server_txts\ip.txt";
+        let ip_string = String::from(fs::read_to_string(&ip_addr_path_rel).unwrap().trim());
+        //    cp nginx_http to nginx (rename)
+        let nginx_conf_http_path_rel = r"anki_server_v_2.1.36\conf\nginx_http.conf";
+        let nginx_conf_path_rel = r"anki_server_v_2.1.36\conf\nginx.conf";
+        fs::copy(nginx_conf_http_path_rel, nginx_conf_path_rel).unwrap();
+        // change ip addr in nginx conf
+        let mut f_conf = OpenOptions::new()
+            .truncate(true)
+            .write(true)
+            .open(nginx_conf_path_rel)
+            .unwrap();
+        let f_http_conf = fs::File::open(nginx_conf_http_path_rel).unwrap();
+        let reader_http = BufReader::new(f_http_conf);
+        for line in reader_http.lines() {
+            let line_ = line.unwrap();
+            if line_.contains("server_name") {
+                writeln!(f_conf, "{}   {};", "server_name", &ip_string).unwrap();
+            } else {
+                writeln!(f_conf, "{}", line_.trim()).unwrap();
+            }
+        }
+    }
     fn cp_addon_modify_pc_anki_ip<'a>(ankidroid_ver: &'a str, pc_anki_ver: &str) -> io::Result<()> {
-        println!(
-            "接下来将自动修改 {}，请稍等。。。",
-            "电脑Anki IP"
-        );
+        println!("接下来将自动修改 {}，请稍等。。。", "电脑Anki IP");
         match ankidroid_ver {
             "1" => {
                 //http
@@ -151,7 +151,9 @@ pub mod Anki_ip {
                     "3" => {
                         //modify PC anki IP
                         write_start_server_choice_num(2);
-                        excuete_change_pc_anki_ip_http("3")
+                        excuete_change_pc_anki_ip_http("3");
+                        // change nginx conf:ip addr
+                        change_nginx_conf_http();
                     }
                     _ => {}
                 }
@@ -173,7 +175,8 @@ pub mod Anki_ip {
                     "3" => {
                         //modify PC anki IP
                         write_start_server_choice_num(3);
-                        excuete_change_pc_anki_ip_https("3")
+                        excuete_change_pc_anki_ip_https("3");
+                        cp_nginx_https_to_nginx_conf();
                     }
                     _ => {}
                 }
@@ -184,10 +187,7 @@ pub mod Anki_ip {
     }
 
     pub fn install_CA_print_server_ipaddress_https() -> Result<()> {
-        println!(
-            "{}",
-          "----------------------------------------------"
-        );
+        println!("{}", "----------------------------------------------");
         println!("安装Local CA。。。,如有弹出框，点击确认");
         let _py_in_ = Command::new(r"ssl certificate\mkcert-v1.4.1-windows-amd64.exe")
             .arg(r"-install")
@@ -261,10 +261,7 @@ pub mod Anki_ip {
                 "rootCA.crt"
             );
         }
-        println!(
-            "{}",
-            "------------------------------------------------"
-        );
+        println!("{}", "------------------------------------------------");
         print!(
             "确认PC导入证书且将证书复制到手机，输入数字 {} 并按回车键/enter继续下一步配置：",
             "1"
@@ -286,10 +283,7 @@ pub mod Anki_ip {
                 .status()
                 .expect("Failed to start generating server ca and key process");
             println!("已导入服务器证书和密钥");
-            println!(
-                "{}",
-               "---------------------------------------------"
-            );
+            println!("{}", "---------------------------------------------");
             //Ankidroid ca import
             println!("{}", "--------------------------------------");
             println!("接下来是手机CA证书安装");
@@ -315,16 +309,11 @@ pub mod Anki_ip {
                 println!("并将下行内容填在手机Anki的指定位置");
                 println!("请在文件夹目录-->电脑端和手机端anki的配置里打开安卓手机anki设置的图片");
                 println!("并将下行内容填在手机Anki的指定位置");
-                println!(
-                    "{}{}{}    (同步地址)",
-                   "https://",
-                 &ipa_.trim(),
-                   sync_addr
-                );
+                println!("{}{}{}    (同步地址)", "https://", &ipa_.trim(), sync_addr);
                 println!(
                     "{}{}{}   (媒体文件同步地址)",
                     "https://",
-                   &ipa_.trim(),
+                    &ipa_.trim(),
                     sync_media_addr
                 );
             }
@@ -347,5 +336,4 @@ pub mod Anki_ip {
             _ => {}
         }
     }
-
 }
