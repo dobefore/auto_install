@@ -9,6 +9,7 @@ mod check_pc_anki_ver;
 mod check_python;
 mod print_colors;
 mod walk_dir;
+
 // .py to exe?
 // modify nginx config add cert path ?
 fn check_python_cp_mod() {

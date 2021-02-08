@@ -105,7 +105,7 @@ pub mod Anki_ip {
     }
     fn cp_nginx_https_to_nginx_conf() {
         // only for pc anki ver >=2.1.36
-        //    cp nginx_http to nginx (rename)
+        //    cp nginx_https to nginx (rename)
         let nginx_conf_http_path_rel = r"anki_server_v_2.1.36\conf\nginx_https.conf";
         let nginx_conf_path_rel = r"anki_server_v_2.1.36\conf\nginx.conf";
         fs::copy(nginx_conf_http_path_rel, nginx_conf_path_rel).unwrap();

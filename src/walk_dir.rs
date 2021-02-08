@@ -4,12 +4,12 @@ pub mod walk_dir {
     use std::process::Command;
     #[allow(non_snake_case)]
     pub fn resend_CA_desk_use_py() {
-        // resend rootCA.crt(first rename it:use copy method) using .py script
+        // resend rootCA.crt(first rename it:use copy method) using .exe
         // to desktop
-        let py_path = r"pre_install\resend_CA_desktop.py";
+        let exe_path = r"pre_install\resend_CA_desktop.exe";
         let rootCA_path = walkdir_find_roorCA_path("C:\\Users", "rootCA.pem");
-        let _resend_desktop = Command::new("python")
-            .args(&[py_path, &rootCA_path])
+        let _resend_desktop = Command::new(exe_path)
+            .arg( rootCA_path)
             .status()
             .expect("fail to run send to CA to desktop");
     }

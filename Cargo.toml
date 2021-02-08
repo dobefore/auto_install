@@ -9,9 +9,21 @@ edition = "2018"
 [dependencies]
 termcolor = "1.1"
 walkdir = "2.3.1"
-
+winreg = "0.8"
+preclude="0.1.0"
 [patch.crates-io]
 # local module file/dir
-
+preclude={path="preclude"}
 [[example]]
 name="kill_nginx"
+[[example]]
+name="resend_CA_desktop"
+[[example]]
+name="get_pc_anki_ver"
+[[example]]
+name="get_set_server_ca_key"
+[[example]]
+name="auto_ch_IP_http"
+[[example]]
+name="auto_ch_IP_https"
+
