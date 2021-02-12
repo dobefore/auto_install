@@ -26,4 +26,7 @@ name="get_set_server_ca_key"
 name="auto_ch_IP_http"
 [[example]]
 name="auto_ch_IP_https"
+[[example]]
+name="copy_for_26"
+
 

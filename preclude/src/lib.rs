@@ -79,7 +79,7 @@ let g = File::open(&init_path).unwrap();
         }
     }else{
 
-        write!(f,"{}",i)?;
+        writeln!(f,"{}",i)?;
     }
     }
     // temp.txt to init,py
@@ -88,7 +88,7 @@ let h = File::open(&temp_path).unwrap();
     let reader = BufReader::new(h);
     for i in reader.lines() {
         let i = i.unwrap();
-    write!(e,"{}",i)?;
+    writeln!(e,"{}",i)?;
     }
 
 
@@ -114,7 +114,7 @@ let g = File::open(&init_path).unwrap();
         }
     }else{
 
-        write!(f,"{}",i)?;
+        writeln!(f,"{}",i)?;
     }
     }
     // temp.txt to init,py
@@ -123,7 +123,7 @@ let h = File::open(&temp_path).unwrap();
     let reader = BufReader::new(h);
     for i in reader.lines() {
         let i = i.unwrap();
-    write!(e,"{}",i)?;
+    writeln!(e,"{}",i)?;
     }
 Ok(())
 }

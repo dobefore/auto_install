@@ -67,7 +67,7 @@ fn main() {
                 );
                 writeln!(f, "{}", q).unwrap();
             } else {
-                write!(f, "{}", i.unwrap()).unwrap();
+                writeln!(f, "{}", i.unwrap()).unwrap();
             }
             // txt lines to .py
             let mut a = OpenOptions::new()
@@ -78,7 +78,7 @@ fn main() {
             let h = File::open(&abs_sync_app_file).unwrap();
             let reader = BufReader::new(h);
             for i in reader.lines() {
-                write!(a, "{}", i.unwrap()).unwrap();
+                writeln!(a, "{}", i.unwrap()).unwrap();
             }
         }
     } else if ver_nu[0] == "3" {
@@ -108,7 +108,7 @@ fn main() {
                     ip_addr
                 );
                 writeln!(f, "{}", q).unwrap();
-            } else if l.contains("ssl_certificate") {
+            } else if l.contains("ssl_certificate") && !l.contains("ssl_certificate_key"){
                 let q = format!(
                     "{}{}{}{};",
                     " ".repeat(7),
@@ -127,7 +127,7 @@ fn main() {
                 );
                 writeln!(f, "{}", q).unwrap();
             } else {
-                write!(f, "{}", l).unwrap();
+                writeln!(f, "{}", l).unwrap();
             }
 
             //txt lines to nginx conf
@@ -139,7 +139,7 @@ fn main() {
             let p = File::open(&abs_nginx_conf_txt_file).unwrap();
             let reader = BufReader::new(p);
             for oo in reader.lines() {
-                write!(k, "{}", oo.unwrap()).unwrap();
+                writeln!(k, "{}", oo.unwrap()).unwrap();
             }
         }
     }
